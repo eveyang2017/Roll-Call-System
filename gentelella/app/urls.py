@@ -9,4 +9,7 @@ urlpatterns = [
 
     # The home page
     url(r'^$', views.index, name='index'),
+    # login
+    # url(r'^$', views.login, name='login'),login/'
+    url(r'register/', views.register, name='register'),
 ]

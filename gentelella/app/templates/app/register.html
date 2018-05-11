@@ -1,0 +1,50 @@
+{% extends "app/base_site.html" %}
+
+{% block title %} Register {% endblock title %}
+
+{% block stylesheets %}
+  {{ block.super }}
+  <!-- Animate.css -->
+  <link href="/static/vendors/animate.css/animate.min.css" rel="stylesheet">
+
+{% endblock stylesheets %}
+
+{% block body_class %}login{% endblock body_class %}
+
+{% block body %}
+    <div class="login_wrapper">
+        <section class="login_content">
+          <h1>注册</h1>
+          <form class="form" action="{% url 'register' %}" method="post">
+            {% csrf_token %}
+            {% for field in form %}
+                {{ field.label_tag }}
+                {{ field }}
+                {{ field.errors }}
+                {% if field.help_text %}
+                    <p class="help text-small text-muted">{{ field.help_text|safe }}</p>
+                {% endif %}
+            {% endfor %}
+            <button type="submit" class="btn btn-primary btn-block">注册</button>
+            <input type="hidden" name="next" value="{{ next }}"/>
+          </form>
+            <div class="clearfix"></div>
+
+            <div class="separator">
+              <p class="change_link">已注册账户 ?
+                <a href="login.html" class="to_register"> 登录 </a>
+              </p>
+
+              <div class="clearfix"></div>
+              <br />
+
+              <div>
+                <h1><i class="fa fa-paw"></i> 学生签到管理系统</h1>
+                <p>©2018 第二小组</p>
+              </div>
+            </div>
+        </section>
+    </div>
+
+{% endblock body %}
+
