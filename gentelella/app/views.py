@@ -1,14 +1,13 @@
 # coding=utf-8
 from django.shortcuts import render, redirect, render_to_response, get_object_or_404
 from django.template import loader
-from django.http import HttpResponse
-from django.contrib.auth import authenticate, login, logout
-from django.contrib.auth.decorators import login_required
-# from .forms import LoginForm
+from django.http import HttpResponse, HttpResponseRedirect
+# from django.contrib.auth import authenticate, login, logout
+# from django.contrib.auth.decorators import login_required
 from django.template.context import RequestContext
 from django.contrib import auth
-from .forms import RegisterForm
-from models import User
+from .forms import RegisterForm, LoginForm
+# from .models import User
 
 
 def index(request):
@@ -28,27 +27,29 @@ def gentella_html(request):
     return HttpResponse(template.render(context, request))
 
 
-# def login(request):
-#     if request.method == 'GET':
-#         form = LoginForm()
-#         return render_to_response('app/login.html', RequestContext(request, {'form': form, }))
-#     else:
-#         form = LoginForm(request.POST)
-#         if form.is_valid():
-#             username = request.POST.get('username', '')
-#             password = request.POST.get('password', '')
-#             user = auth.authenticate(username=username, password=password)
-#             if user is not None and user.is_active:
-#                 auth.login(request, user)
-#                 return render_to_response('app/index.html', RequestContext(request))
-#             else:
-#                 return render_to_response('app/login.html', RequestContext(request, {'form': form, 'password_is_wrong': True}))
-#         else:
-#             return render_to_response('app/login.html', RequestContext(request, {'form': form, }))
+def do_login(request):
+    if request.method == 'GET':
+        form = LoginForm()
+        return render_to_response('app/login.html', RequestContext(request, {'form': form, }))
+    else:
+        form = LoginForm(request.POST)
+        if form.is_valid():
+            username = request.POST.get('username', '')
+            password = request.POST.get('password', '')
+            user = auth.authenticate(username=username, password=password)
+            if user is not None and user.is_active:
+                auth.login(request, user)
+                return render_to_response('app/index.html', RequestContext(request))
+            else:
+                return render_to_response('app/login.html', RequestContext(request, {'form': form, 'password_is_wrong': True}))
+        else:
+            return render_to_response('app/login.html', RequestContext(request, {'form': form, }))
 
-# def logout(request):
+
+# def do_logout(request):
 #     auth.logout(request)
-#     return HttpResponseRedirect('app/login.html')
+#     return HttpResponseRedirect('app/logout/')
+
 
 def register(request):
     redirect_to = request.POST.get('next', request.GET.get('next', ''))
@@ -63,3 +64,5 @@ def register(request):
     else:
         form = RegisterForm()
     return render(request, 'app/register.html', context={'form': form, 'next': redirect_to})
+
+

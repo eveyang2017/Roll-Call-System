@@ -15,20 +15,23 @@
     <div class="login_wrapper">
       <!--<div class="animate form login_form">-->
         <section class="login_content">
-          <form action="" method="get">
-            <h1>登录</h1>
+        <h1>登录</h1>
+          <form class="form" action="{% url 'do_login' %}" method="post">
+              {% csrf_token %}
             <div>
-              <input type="text" class="form-control" placeholder="Username" required="" name="username"/>
+                <input type="text" name='username' class="form-control" id="id_username" placeholder="Username" autofocus required>
+              <!--<input type="text" class="form-control" placeholder="Username" required="" name="username"/>-->
             </div>
             <div>
-              <input type="password" class="form-control" placeholder="Password" required="" name="password"/>
+                <input type="password" name='password' class="form-control" id="id_password" placeholder="Password" required>
+              <!--<input type="password" class="form-control" placeholder="Password" required="" name="password"/>-->
             </div>
             <div>
               <!--<a class="btn btn-default submit" href="index.html">登录</a>-->
               <button type="submit" class="btn btn-primary btn-block">登录</button>
               <a class="reset_pass" href="#">忘记密码?</a>
             </div>
-
+          </form>
             <div class="clearfix"></div>
 
             <div class="separator">
@@ -45,7 +48,7 @@
                 <!--<p>©2016 All Rights Reserved. Gentelella Alela! is a Bootstrap 3 template. Privacy and Terms</p>-->
               </div>
             </div>
-          </form>
+
         </section>
       <!--</div>-->
     </div>

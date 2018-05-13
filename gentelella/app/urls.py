@@ -1,4 +1,4 @@
-from django.conf.urls import url
+from django.conf.urls import url, include
 from app import views
 
 urlpatterns = [
@@ -10,6 +10,8 @@ urlpatterns = [
     # The home page
     url(r'^$', views.index, name='index'),
     # login
-    # url(r'^$', views.login, name='login'),login/'
-    url(r'register/', views.register, name='register'),
+    url(r'app/login/', views.do_login, name='do_login'),
+    url(r'app/register/', views.register, name='register'),
+    # url(r'app/logout/', views.do_logout, name='do_logout'),
+    url(r'^app/', include('django.contrib.auth.urls')),
 ]
