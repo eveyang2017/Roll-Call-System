@@ -16,16 +16,12 @@
       <!--<div class="animate form login_form">-->
         <section class="login_content">
         <h1>登录</h1>
-          <form class="form" action="{% url 'do_login' %}" method="post">
-              {% csrf_token %}
-            <div>
-                <input type="text" name='username' class="form-control" id="id_username" placeholder="Username" autofocus required>
-              <!--<input type="text" class="form-control" placeholder="Username" required="" name="username"/>-->
-            </div>
-            <div>
-                <input type="password" name='password' class="form-control" id="id_password" placeholder="Password" required>
-              <!--<input type="password" class="form-control" placeholder="Password" required="" name="password"/>-->
-            </div>
+          <form class="form" action="{% url 'login' %}" method="post">
+            {% csrf_token %}
+            <label for="id_username">用户名:</label>
+            <input id="id_username" name="username" placeholder="" type="text" required="">
+            <label for="id_password">密码:</label>
+            <input id="id_password" name="password" placeholder="" type="password" required="">
             <div>
               <!--<a class="btn btn-default submit" href="index.html">登录</a>-->
               <button type="submit" class="btn btn-primary btn-block">登录</button>
