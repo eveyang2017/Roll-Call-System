@@ -15,6 +15,12 @@ Including another URLconf
 """
 from django.conf.urls import url, include
 from django.contrib import admin
+import xadmin
+from xadmin.plugins import xversion
+
+xversion.register_models()
+
+xadmin.autodiscover()
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
@@ -22,6 +28,6 @@ urlpatterns = [
     # app/ -> Genetelella UI and resources
     url(r'^app/', include('app.urls')),
     url(r'^', include('app.urls')),
-
+    url(r'^xadmin/', include(xadmin.site.urls)),
 
 ]
