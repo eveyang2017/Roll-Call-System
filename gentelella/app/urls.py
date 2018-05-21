@@ -10,10 +10,11 @@ urlpatterns = [
     # The home page
     url(r'^$', views.index, name='index'),
     # login
-    url(r'app/login/', views.do_login, name='do_login'),
+    url(r'app/login/$', views.do_login, name='do_login'),
     url(r'app/register/', views.register, name='register'),
     url(r'app/logout/', views.do_logout, name='do_logout'),
     url(r'app/', include('django.contrib.auth.urls')),
-    url(r'app/group_delete', views.group_delete, name='group_delete'),
-    url(r'app/show_group/', views.get_group, name='get_group'),
+    url(r'app/show_group/', views.show_group, name='show_group'),
+    url(r'app/get_group/$', views.get_group),
+    url(r'app/del_group/$', views.del_group),
 ]

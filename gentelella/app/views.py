@@ -10,7 +10,11 @@ from django.contrib import auth
 from .forms import RegisterForm, LoginForm
 from django.contrib.auth.models import Permission
 from django.contrib.auth import models
+from django.http import JsonResponse
+from .utils import serialize_bootstraptable
+from django.views.decorators.csrf import csrf_exempt
 import json
+
 
 
 def index(request):
@@ -30,6 +34,7 @@ def gentella_html(request):
     return HttpResponse(template.render(context, request))
 
 
+@csrf_exempt
 def do_login(request):
     if request.method == 'GET':
         form = LoginForm()
@@ -69,91 +74,32 @@ def register(request):
     return render(request, 'app/register.html', context={'form': form, 'next': redirect_to})
 
 
-def get_group(request):
-    # per = Permission.objects.get()
+def show_group(request):
     group = auth.models.Group.objects.all()
-
     return render(request, 'app/show_group.html', context={'group': group})
 
 
-def group_delete(request):
-    if request.method == "POST":
-        groupid = request.POST.get('groupid')
-        print("id = %s" % groupid)
-        status = "删除成功！"
-        result = "Error!"
-        deletesql = models.Group.objects.filter(id=groupid)  # 执行删除操作
-        if deletesql.delete():
-            return HttpResponse(json.dumps({
-                "status": status
-            }))
-        else:
-            return HttpResponse(json.dumps({
-                "result": result
-            }))
+def get_group(request):
+    group = auth.models.Group.objects.all()
+    group_send = serialize_bootstraptable(group)
+    # return render(request, 'app/show_group.html', context={'group': group})
+    return JsonResponse(group_send)
 
 
+@csrf_exempt
 def del_group(request):
-    ret = {'status': True}
-    try:
-        groupid = request.GET.get('groupid')
-        models.Group.objects.filter(id=groupid).delete()
-    except Exception as e:
-        ret['status'] = False
-    return HttpResponse(json.dumps(ret))
+    dict = {}
+    status = {'status': False}
+    if request.method == "POST":
+        received_json_data = json.loads(request.body)
+        print(received_json_data)
+        for i in received_json_data:
+            groupid = (i['id'])
+            deletesql = models.Group.objects.filter(id=groupid)  # 执行删除操作
+            if deletesql.delete():
+                status = {'status': True}
+            else:
+                status = {'status': False}
+    return JsonResponse(status)
 
-# def add_student(request):
-#     response = {'status': True, 'message': None, 'data': None}
-#     try:
-#         u = request.POST.get('username')
-#         a = request.POST.get('age')
-#         g = request.POST.get('gender')
-#         c = request.POST.get('cls_id')
-#         obj = models.Student.objects.create(
-#             username=u,
-#             age=a,
-#             gender=g,
-#             cs_id=c
-#         )
-#         response['data'] = obj.id
-#     except Exception as e:
-#         response['status'] = False
-#         response['message'] = '用户输入错误'
-#
-#     result = json.dumps(response, ensure_ascii=False)
-#     return HttpResponse(result)
-#
-#
-# def del_student(request):
-#     ret = {'status': True}
-#     try:
-#         nid = request.GET.get('nid')
-#         models.Student.objects.filter(id=nid).delete()
-#     except Exception as e:
-#         ret['status'] = False
-#     return HttpResponse(json.dumps(ret))
-#
-#
-# def edit_student(request):
-#     response = {'code': 1000, 'message': None}
-#     try:
-#         nid = request.POST.get('nid')
-#         user = request.POST.get('user')
-#         age = request.POST.get('age')
-#         gender = request.POST.get('gender')
-#         cls_id = request.POST.get('cls_id')
-#         models.Student.objects.filter(id=nid).update(
-#             username=user,
-#             age=age,
-#             gender=gender,
-#             cs_id=cls_id
-#         )
-#     except Exception as e:
-#         response['code'] = 1001
-#         response['message'] = str(e)
-#     return HttpResponse(json.dumps(response))
-#
-#
-# def test_ajax_list(request):
-#     print(request.POST.getlist('k'))
-#     return HttpResponse('...')
+

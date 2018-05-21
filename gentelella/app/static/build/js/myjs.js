@@ -10,17 +10,18 @@ $(function () {
 
 //初始化表格
 var tableInit = {
+
     Init: function () {
         //绑定table的viewmodel
         this.myViewModel = new ko.bootstrapTableViewModel({
-            url: "{% url 'get_group' %}",         //请求后台的URL（*）
-            method: 'get',                      //请求方式（*）
+            url: "/app/get_group/",         //请求后台的URL（*）
+            method: 'GET',                      //请求方式（*）
             toolbar: '#toolbar',                //工具按钮用哪个容器
             queryParams: function (param) {
                 return { limit: param.limit, offset: param.offset };
             },//传递参数（*）
             pagination: true,                   //是否显示分页（*）
-            sidePagination: "client",           //分页方式：client客户端分页，server服务端分页（*）
+            sidePagination: "server",           //分页方式：client客户端分页，server服务端分页（*）
             pageNumber: 1,                      //初始化加载第一页，默认第一页
             pageSize: 10,                       //每页的记录行数（*）
             pageList: [10, 25, 50, 100],        //可供选择的每页的行数（*）
@@ -38,10 +39,10 @@ var operate = {
         this.operateDelete();
         this.DepartmentModel = {
             id: ko.observable(),
-            Name: ko.observable(),
-            Level: ko.observable(),
-            Des: ko.observable(),
-            CreateTime: ko.observable()
+            name: ko.observable(),
+//            Level: ko.observable(),
+//            Des: ko.observable(),
+//            CreateTime: ko.observable()
         };
     },
     //新增
@@ -84,13 +85,13 @@ var operate = {
         $('#btn_delete').on("click", function () {
             var arrselectedData = tableInit.myViewModel.getSelections();
             $.ajax({
-                url: "/Department/Delete",
+                url: "/app/del_group/",
                 type: "post",
                 contentType: 'application/json',
                 data: JSON.stringify(arrselectedData),
                 success: function (data, status) {
                     alert(status);
-                    //tableInit.myViewModel.refresh();
+                    tableInit.myViewModel.refresh();
                 }
             });
         });

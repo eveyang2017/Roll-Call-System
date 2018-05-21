@@ -16,7 +16,7 @@
       <!--<div class="animate form login_form">-->
         <section class="login_content">
         <h1>登录</h1>
-          <form class="form" action="{% url 'login' %}" method="post">
+          <form class="form" action="{% url 'do_login' %}" method="post">
             {% csrf_token %}
             <label for="id_username">用户名:</label>
             <input id="id_username" name="username" placeholder="" type="text" required="">
@@ -33,6 +33,9 @@
             <div class="separator">
               <p class="change_link">没有帐号?
                 <a href="{% url 'register' %}" class="to_register"> 注册新帐号 </a>
+              </p>
+              <p class="change_link">管理员?
+                <a href="/xadmin/" class="to_register"> 登录 </a>
               </p>
 
               <div class="clearfix"></div>
