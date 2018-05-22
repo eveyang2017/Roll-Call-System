@@ -8,16 +8,22 @@ from django.contrib.auth.models import AbstractUser, Permission
 
 
 class User(AbstractUser):
-    nickname = models.CharField(max_length=50, blank=True)
-    num = models.CharField(max_length=32, blank=True)
+    nickname = models.CharField(max_length=50, blank=True, verbose_name="昵称")
+    num = models.CharField(max_length=32, blank=True, verbose_name="工号")
+    university = models.CharField(max_length=100, blank=True, verbose_name="学校")
+    college = models.CharField(max_length=100, blank=True, verbose_name="学院")
+    faculty = models.CharField(max_length=100, blank=True, verbose_name="系别")
 
     class Meta(AbstractUser.Meta):
         pass
 
 
 class Dictionary(models.Model):
-    code = models.CharField(max_length=16)
-    description = models.CharField(max_length=256)
+    code = models.CharField(max_length=16, verbose_name="编号")
+    description = models.CharField(max_length=256, verbose_name="字典说明")
+
+    class Meta:
+        verbose_name = "数据字典"
 
     def __init__(self, *args, **kwargs):
         super(Dictionary, self).__init__(*args, **kwargs)
@@ -28,10 +34,13 @@ class Dictionary(models.Model):
 
 
 class DictionaryDetail(models.Model):
-    dictionary_id = models.IntegerField()
-    item_key = models.IntegerField()
-    item_value = models.CharField(max_length=32)
-    is_default = models.BooleanField(default=False)
+    dictionary_id = models.IntegerField(verbose_name="字典编号")
+    item_key = models.IntegerField(verbose_name="数据项键")
+    item_value = models.CharField(max_length=32, verbose_name="数据项值")
+    is_default = models.BooleanField(default=False, verbose_name="是否为默认")
+
+    class Meta:
+        verbose_name = "数据字典明细"
 
     def __init__(self, *args, **kwargs):
         super(DictionaryDetail, self).__init__(*args, **kwargs)
@@ -41,15 +50,22 @@ class DictionaryDetail(models.Model):
         return self.headline
 
 
-# class Course(models.Model):
-#     c_name = models.CharField(max_length=30)
-#     c_desc = models.CharField(max_length=100)
-#
-#     class Meta:
-#      db_table = 'course'
+class Course(models.Model):
+    c_name = models.CharField(max_length=30, verbose_name="课程名称")
+    c_category = models.CharField(max_length=30, blank=True, verbose_name="课程类别")
+    c_credit = models.CharField(max_length=4, verbose_name="学分")
+    c_hours = models.CharField(max_length=8, verbose_name="学时")
+    c_teacher = models.CharField(max_length=10, blank=True, verbose_name="教师")
+    c_desc = models.CharField(max_length=100, blank=True, verbose_name="课程说明")
 
+    class Meta:
+        verbose_name = "课程"
 
-# class Profile(models.Model):
-#     nickname = models.CharField(max_length=50, blank=True)
-#     user = models.OneToOneField(User)
+    def __init__(self, *args, **kwargs):
+        super(Course, self).__init__(*args, **kwargs)
+        self.headline = None
+
+    def __str__(self):  # __unicode__ on Python 2
+        return self.headline
+
 

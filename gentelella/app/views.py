@@ -12,6 +12,7 @@ from django.contrib.auth.models import Permission
 from django.contrib.auth import models
 from django.http import JsonResponse
 from .utils import serialize_bootstraptable
+from .models import User
 from django.views.decorators.csrf import csrf_exempt
 import json
 
@@ -88,7 +89,6 @@ def get_group(request):
 
 @csrf_exempt
 def del_group(request):
-    dict = {}
     status = {'status': False}
     if request.method == "POST":
         received_json_data = json.loads(request.body)
@@ -103,3 +103,11 @@ def del_group(request):
     return JsonResponse(status)
 
 
+def show_stu(request):
+    return render(request, 'app/show_stu.html')
+
+
+def get_stu(request):
+    stu = User.objects.filter(groups__id='2')
+    stuid_send = serialize_bootstraptable(stu)
+    return JsonResponse(stuid_send)

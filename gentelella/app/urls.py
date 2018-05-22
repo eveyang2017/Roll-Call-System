@@ -17,4 +17,7 @@ urlpatterns = [
     url(r'app/show_group/', views.show_group, name='show_group'),
     url(r'app/get_group/$', views.get_group),
     url(r'app/del_group/$', views.del_group),
+    url(r'app/show_stu/', views.show_stu, name='show_stu'),
+    url(r'app/get_stu/$', views.get_stu),
+
 ]

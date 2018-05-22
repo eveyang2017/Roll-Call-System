@@ -39,15 +39,14 @@
 <script src="https://cdn.bootcss.com/knockout/3.4.0/knockout-min.js"></script>
 <script src="/static/vendors/knockout.mapping-latest/knockout.mapping-latest.js"></script>
 <script src="/static/build/js/knockout.bootstraptable.js"></script>
-<script src="/static/build/js/myjs.js"></script>
+<script src="/static/build/js/show_stu.js"></script>
 {% endblock %}
 {% block content %}
-
   <div class="right_col" role="main">
     <div class="">
       <div class="page-title">
         <div class="title_left">
-          <h3>角色列表</h3>
+          <h3>学生列表</h3>
         </div>
 
       </div>
@@ -76,7 +75,7 @@
         </div>
           <div class="x_panel">
 
-                  <div id="toolbar" class="btn-group">
+                  <div id="get_stu" class="btn-group">
                     <button id="btn_add" type="button" class="btn btn-default">
                     <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>新增
                     </button>
@@ -88,14 +87,15 @@
                     </button>
                 </div>
             <div class="x_content">
-            <table id="tb_dept" data-bind="myBootstrapTable:$root">
+            <table id="tb_stu" data-bind="myBootstrapTable:$root">
                 <thead>
                     <tr>
                         <th data-checkbox="true"></th>
-                        <th data-field="id">ID</th>
-                        <th data-field="name">角色名称</th>
-                        <!--<th data-field="Des">描述</th>-->
-                        <!--<th data-field="strCreatetime">创建时间</th>-->
+                        <!--<th data-field="username">学号</th>-->
+                        <th data-field="num">学号</th>
+                        <th data-field="first_name">姓名</th>
+                        <th data-field="college">学院</th>
+                        <th data-field="faculty">系别</th>
                     </tr>
                 </thead>
             </table>
@@ -103,9 +103,10 @@
           </div>
         </div>
       </div>
+
+
     </div>
   </div>
-
 <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -135,6 +136,4 @@
         </div>
     </div>
 </div>
-
-
 {% endblock content %}
