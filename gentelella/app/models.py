@@ -25,12 +25,8 @@ class Dictionary(models.Model):
     class Meta:
         verbose_name = "数据字典"
 
-    def __init__(self, *args, **kwargs):
-        super(Dictionary, self).__init__(*args, **kwargs)
-        self.headline = None
-
     def __str__(self):  # __unicode__ on Python 2
-        return self.headline
+        return self.code
 
 
 class DictionaryDetail(models.Model):
@@ -42,30 +38,22 @@ class DictionaryDetail(models.Model):
     class Meta:
         verbose_name = "数据字典明细"
 
-    def __init__(self, *args, **kwargs):
-        super(DictionaryDetail, self).__init__(*args, **kwargs)
-        self.headline = None
-
     def __str__(self):  # __unicode__ on Python 2
-        return self.headline
+        return self.dictionary_id
 
 
 class Course(models.Model):
-    c_name = models.CharField(max_length=30, verbose_name="课程名称")
-    c_category = models.CharField(max_length=30, blank=True, verbose_name="课程类别")
-    c_credit = models.CharField(max_length=4, verbose_name="学分")
-    c_hours = models.CharField(max_length=8, verbose_name="学时")
-    c_teacher = models.CharField(max_length=10, blank=True, verbose_name="教师")
-    c_desc = models.CharField(max_length=100, blank=True, verbose_name="课程说明")
+    name = models.CharField(max_length=30, verbose_name="课程名称")
+    category = models.CharField(max_length=30, blank=True, verbose_name="课程类别")
+    credit = models.CharField(max_length=4, verbose_name="学分")
+    hours = models.CharField(max_length=8, verbose_name="学时")
+    teacher = models.CharField(max_length=10, blank=True, verbose_name="教师")
+    desc = models.CharField(max_length=100, blank=True, verbose_name="课程说明")
 
     class Meta:
         verbose_name = "课程"
 
-    def __init__(self, *args, **kwargs):
-        super(Course, self).__init__(*args, **kwargs)
-        self.headline = None
-
     def __str__(self):  # __unicode__ on Python 2
-        return self.headline
+        return self.name
 
 

@@ -12,8 +12,9 @@ from django.contrib.auth.models import Permission
 from django.contrib.auth import models
 from django.http import JsonResponse
 from .utils import serialize_bootstraptable
-from .models import User
+from .models import User, Course
 from django.views.decorators.csrf import csrf_exempt
+from django.core.paginator import PageNotAnInteger, Paginator, InvalidPage, EmptyPage
 import json
 
 
@@ -82,7 +83,7 @@ def show_group(request):
 
 def get_group(request):
     group = auth.models.Group.objects.all()
-    group_send = serialize_bootstraptable(group)
+    group_send = serialize_bootstraptable(group, group.count())
     # return render(request, 'app/show_group.html', context={'group': group})
     return JsonResponse(group_send)
 
@@ -108,6 +109,69 @@ def show_stu(request):
 
 
 def get_stu(request):
-    stu = User.objects.filter(groups__id='2')
-    stuid_send = serialize_bootstraptable(stu)
-    return JsonResponse(stuid_send)
+    if request.method == "GET":
+        limit = request.GET.get('limit')
+        offset = request.GET.get('offset')
+        if not limit:
+            limit = 10
+        if not offset:
+            offset = 0
+        stu = User.objects.filter(groups__id='2')
+        pageinator = Paginator(stu, limit)
+        page = int(int(offset) / int(limit) + 1)
+        stu_page_info = pageinator.page(page).object_list
+        stu_count = stu.count()
+        stu_send = serialize_bootstraptable(stu_page_info, stu_count)
+    return JsonResponse(stu_send)
+
+
+def show_course(request):
+    return render(request, 'app/show_course.html')
+
+
+@csrf_exempt
+def get_course(request):
+    course = Course.objects.all()
+    course_send = serialize_bootstraptable(course, course.count())
+    return JsonResponse(course_send)
+
+# @csrf_exempt
+# def get_course(request):
+#     data = request.POST  # 获取 bootstrap-table post请求的数据，直接POST获取！
+#     queryResult = Course.objects.all()  # 去数据库查询
+#     if queryResult == 0:
+#         return HttpResponse('0')
+#
+#     elif queryResult == -1:
+#         return HttpResponse('-1')
+#
+#     else:
+#         '''服务端分页时，前端需要传回：limit（每页需要显示的数据量），offset（分页时 数据的偏移量，即第几页）'''
+#         '''mysql 利用 limit语法 进行分页查询'''
+#         '''服务端分页时，需要返回：total（数据总量），rows（每行数据）  如： {"total": total, "rows": []}'''
+#         returnData = {"rows": []}  #########非常重要############
+#         with open("slg/others/country", "r") as f:
+#             datas = json.loads(f.read())  # 直接读出来，是dic对象，用key，value获取。。。上面的是转换为 对象了，可以用 “.” 获取
+#         '''遍历 查询结果集'''
+#         for results in queryResult:
+#             '''遍历 country.json 输出 订单状态'''
+#             for data in datas['order']:
+#                 if data['stateNum'] == str(results['purchasestate']):
+#                     orderStateResult = data['stateResult']
+#
+#             '''遍历 country.json 输出 国家名称'''
+#             for data in datas['country']:
+#                 if data['shorthand'] == results['countrycode']:
+#                     countryName = data['name']
+#
+#             returnData['rows'].append({
+#                 "id": results['gameorderid'],
+#                 "name": results['orderid'],
+#                 "category": results['nickname'],
+#                 "credit": "Wrath",
+#                 "hours": results['purchasetimes'],
+#                 "teacher": str(results['priceamount']),
+#                 "desc": orderStateResult,
+#             })
+#         # 最后用dumps包装下，json.dumps({"rows": [{"gameorderid": 1}, {"gameorderid": 22}]})
+#         return HttpResponse(json.dumps(returnData))

@@ -2,9 +2,9 @@ from django.core.serializers import serialize
 import json
 
 
-def serialize_bootstraptable(queryset):
+def serialize_bootstraptable(queryset, total):
     json_data = serialize('json', queryset)
-    json_final = {"total": queryset.count(), "rows": []}
+    json_final = {"total": total, "rows": []}
     data = json.loads(json_data)
     for item in data:
         del item["model"]
