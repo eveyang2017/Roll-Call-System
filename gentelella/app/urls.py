@@ -21,4 +21,7 @@ urlpatterns = [
     url(r'app/get_stu/$', views.get_stu),
     url(r'app/show_course/', views.show_course, name='show_course'),
     url(r'app/get_course/$', views.get_course),
+    url(r'app/add_course/$', views.add_course),
+    url(r'app/update_course/$', views.update_course),
+    url(r'app/del_course/$', views.del_course),
 ]

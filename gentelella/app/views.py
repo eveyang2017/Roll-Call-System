@@ -131,10 +131,79 @@ def show_course(request):
 
 @csrf_exempt
 def get_course(request):
-    course = Course.objects.all()
-    course_send = serialize_bootstraptable(course, course.count())
+    if request.method == "GET":
+        limit = request.GET.get('limit')
+        offset = request.GET.get('offset')
+        if not limit:
+            limit = 10
+        if not offset:
+            offset = 0
+        course = Course.objects.all()
+        pageinator = Paginator(course, limit)
+        page = int(int(offset) / int(limit) + 1)
+        course_page_info = pageinator.page(page).object_list
+        course_send = serialize_bootstraptable(course_page_info, course.count())
     return JsonResponse(course_send)
 
+
+@csrf_exempt
+def add_course(request):
+    status = {'status': False}
+    print(request.body)
+    if request.method == "POST":
+        name = request.POST.get('name')
+        category = request.POST.get('category')
+        credit = request.POST.get('credit')
+        hours = request.POST.get('hours')
+        desc =request.POST.get('desc')
+        new_course = Course.objects.create(
+            name=name,
+            category=category,
+            credit=credit,
+            hours=hours,
+            desc=desc,
+        )
+        if new_course:
+            status = {'status': True}
+    return JsonResponse(status)
+
+
+@csrf_exempt
+def update_course(request):
+    status = {'status': False}
+    print(request.body)
+    if request.method == "POST":
+        id = request.POST.get('id')
+        name = request.POST.get('name')
+        category = request.POST.get('category')
+        credit = request.POST.get('credit')
+        hours = request.POST.get('hours')
+        desc = request.POST.get('desc')
+        new_course_info = Course.objects.select_for_update().filter(id=id).update(
+            name=name,
+            category=category,
+            credit=credit,
+            hours=hours,
+            desc=desc)
+        if new_course_info:
+            status = {'status': True}
+    return JsonResponse(status)
+
+
+@csrf_exempt
+def del_course(request):
+    status = {'status': False}
+    if request.method == "POST":
+        received_json_data = json.loads(request.body)
+        print(received_json_data)
+        for i in received_json_data:
+            courseid = (i['id'])
+            deletesql = models.Group.objects.filter(id=courseid)  # 执行删除操作
+            if deletesql.delete():
+                status = {'status': True}
+            else:
+                status = {'status': False}
+    return JsonResponse(status)
 # @csrf_exempt
 # def get_course(request):
 #     data = request.POST  # 获取 bootstrap-table post请求的数据，直接POST获取！
