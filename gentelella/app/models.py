@@ -57,3 +57,46 @@ class Course(models.Model):
         return self.name
 
 
+class Department(models.Model):
+    name = models.CharField(verbose_name="组织名称", max_length=30)
+    pri = models.IntegerField(verbose_name="序号")
+    desc = models.CharField(verbose_name="备注", max_length=100)
+    parent = models.ForeignKey('self', blank=True, null=True, related_name="children", verbose_name="上级结构")
+    full_path = models.CharField(verbose_name="全路径", max_length=20, blank=True, null=True)
+    deep_level = models.IntegerField(verbose_name="深度", default=0)
+
+    def __str__(self):
+
+        return self.name
+
+    class Meta:
+
+        verbose_name = "组织结构"
+        verbose_name_plural = "组织结构"
+
+
+# class TreeNode():
+#     def __init__(self):
+#
+#     self.id = 0
+#     self.text = "Node 1"
+#     self.href = "#node-1"
+#     self.selectable = True
+#     self.state = {
+#         ‘checked‘: True,
+#         ‘disabled‘: True,
+#         ‘expanded‘: True,
+#         ‘selected‘: True,
+#         },
+#         self.tags = [‘available‘],
+#         self.nodes = []
+#     def to_dict(self):
+#         icon = (len(self.nodes) > 0) and ‘glyphicon glyphicon-list-alt‘ or ‘glyphicon glyphicon-user‘
+#     return {
+#         ‘id‘: self.id,
+#         ‘text‘: self.text,
+#         ‘icon‘: icon,
+#         ‘href‘: self.href,
+#         ‘tags‘: [‘1‘],
+#         ‘nodes‘: self.nodes,
+#     }

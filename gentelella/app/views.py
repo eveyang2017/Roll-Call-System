@@ -18,7 +18,6 @@ from django.core.paginator import PageNotAnInteger, Paginator, InvalidPage, Empt
 import json
 
 
-
 def index(request):
     context = {}
     template = loader.get_template('app/login.html')
@@ -204,6 +203,30 @@ def del_course(request):
             else:
                 status = {'status': False}
     return JsonResponse(status)
+
+
+# def get_dept_tree(parents):
+#     display_tree = []
+#     for p in parents:
+#         node = TreeNode()
+#         node.id = p.id
+#         node.text = p.name
+#         children = p.children.all()
+#         if len(children) > 0:
+#             node.nodes = get_dept_tree(children)
+#         display_tree.append(node.to_dict())
+#     return display_tree
+#
+#
+# def show(request):
+#     return render(request, "dept/show.html")
+#
+#
+# def tree(request):
+#     root = Department.objects.get(parent=None)
+#     tree = get_dept_tree([root])
+#     return JsonResponse(tree, safe=False)
+
 # @csrf_exempt
 # def get_course(request):
 #     data = request.POST  # 获取 bootstrap-table post请求的数据，直接POST获取！
