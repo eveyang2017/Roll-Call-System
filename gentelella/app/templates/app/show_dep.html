@@ -1,0 +1,96 @@
+{% extends "app/base_site.html" %}
+{% block javascripts %}
+<!-- jQuery -->
+<script src="/static/vendors/jquery/dist/jquery.min.js"></script>
+<!-- Bootstrap -->
+<script src="/static/vendors/bootstrap/dist/js/bootstrap.min.js"></script>
+<!-- FastClick -->
+<script src="/static/vendors/fastclick/lib/fastclick.js"></script>
+<!-- NProgress -->
+<script src="/static/vendors/nprogress/nprogress.js"></script>
+<!-- bootstrap-progressbar -->
+<script src="/static/vendors/bootstrap-progressbar/bootstrap-progressbar.min.js"></script>
+<!-- iCheck -->
+<script src="/static/vendors/iCheck/icheck.min.js"></script>
+<!-- bootstrap-daterangepicker -->
+<script src="/static/vendors/moment/min/moment.min.js"></script>
+<script src="/static/vendors/bootstrap-daterangepicker/daterangepicker.js"></script>
+<!-- bootstrap-wysiwyg -->
+<script src="/static/vendors/bootstrap-wysiwyg/js/bootstrap-wysiwyg.min.js"></script>
+<script src="/static/vendors/jquery.hotkeys/jquery.hotkeys.js"></script>
+<script src="/static/vendors/google-code-prettify/src/prettify.js"></script>
+<!-- jQuery Tags Input -->
+<script src="/static/vendors/jquery.tagsinput/src/jquery.tagsinput.js"></script>
+<!-- Switchery -->
+<script src="/static/vendors/switchery/dist/switchery.min.js"></script>
+<!-- Select2 -->
+<script src="/static/vendors/select2/dist/js/select2.full.min.js"></script>
+<!-- Parsley -->
+<script src="/static/vendors/parsleyjs/dist/parsley.min.js"></script>
+<!-- Autosize -->
+<script src="/static/vendors/autosize/dist/autosize.min.js"></script>
+<!-- jQuery autocomplete -->
+<script src="/static/vendors/devbridge-autocomplete/dist/jquery.autocomplete.min.js"></script>
+<!-- starrr -->
+<script src="/static/vendors/starrr/dist/starrr.js"></script>
+<script src="/static/vendors/jstree/dist/jstree.min.js"></script>
+<script src="/static/build/js/show_dep.js"></script>
+{% endblock %}
+{% block content %}
+  <div class="right_col" role="main">
+      <div class="container">
+        <ul class="breadcrumb">
+            <li><a href="{% url 'go_index' %}">首页</a></li>
+            <li><a href="#">组织管理</a></li>
+            <li>组织树</li>
+            <!--<li><a href="#">阿里</a></li>-->
+            <!--<li><a href="#">林芝</a></li>-->
+        </ul>
+      </div>
+      <div class="">
+      <div class="page-title">
+        <div class="title_left">
+          <h3>组织树</h3>
+        </div>
+
+      </div>
+      <div class="clearfix"></div>
+      <div class="row">
+
+                <!--<h1>HTML demo</h1>-->
+            <!--<div id="html" class="demo">-->
+                <!--<ul>-->
+                    <!--<li data-jstree='{ "opened" : true }'>Root node-->
+                        <!--<ul>-->
+                            <!--<li data-jstree='{ "selected" : true }'>Child node 1</li>-->
+                            <!--<li>Child node 2</li>-->
+                        <!--</ul>-->
+                    <!--</li>-->
+                <!--</ul>-->
+            <!--</div>-->
+
+            <!--<h1>Inline data demo</h1>-->
+            <!--<div id="data" class="demo"></div>-->
+
+            <!--<h1>Data format demo</h1>-->
+            <!--<div id="frmt" class="demo"></div>-->
+
+            <!--<h1>AJAX demo</h1>-->
+            <div id="ajax" class="demo"></div>
+
+            <!--<h1>Lazy loading demo</h1>-->
+            <!--<div id="lazy" class="demo"></div>-->
+
+            <!--<h1>Callback function data demo</h1>-->
+            <!--<div id="clbk" class="demo"></div>-->
+
+            <!--<h1>Interaction and events demo</h1>-->
+            <!--<button id="evts_button">select node with id 1</button> <em>either click the button or a node in the tree</em>-->
+            <!--<div id="evts" class="demo"></div>-->
+        </div>
+      </div>
+
+
+    </div>
+  </div>
+{% endblock content %}

@@ -44,7 +44,16 @@
 {% block content %}
 
   <div class="right_col" role="main">
-    <div class="">
+      <div class="container">
+        <ul class="breadcrumb">
+            <li><a href="{% url 'go_index' %}">首页</a></li>
+            <li><a href="#">角色</a></li>
+            <li>角色列表</li>
+            <!--<li><a href="#">阿里</a></li>-->
+            <!--<li><a href="#">林芝</a></li>-->
+        </ul>
+      </div>
+      <div class="">
       <div class="page-title">
         <div class="title_left">
           <h3>角色列表</h3>
@@ -63,7 +72,7 @@
                         <div class="col-sm-3">
                             <input type="text" class="form-control" id="txt_search_departmentname">
                         </div>
-                        <!--<label class="control-label col-sm-1" for="txt_search_statu">状态</label>-->
+                        <!--<label class="control-label col-sm-1" for="txt_search_statu">课程类别</label>-->
                         <!--<div class="col-sm-3">-->
                             <!--<input type="text" class="form-control" id="txt_search_statu">-->
                         <!--</div>-->

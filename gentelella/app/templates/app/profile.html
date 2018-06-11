@@ -8,10 +8,19 @@
 
 {% block content %}
   <div class="right_col" role="main">
+    <div class="container">
+        <ul class="breadcrumb">
+          <li><a href="{% url 'go_index' %}">首页</a></li>
+          <li><a href="#">个人信息</a></li>
+          <li>简介</li>
+            <!--<li><a href="#">阿里</a></li>-->
+            <!--<li><a href="#">林芝</a></li>-->
+        </ul>
+    </div>
     <div class="">
       <div class="page-title">
         <div class="title_left">
-          <h3>User Profile</h3>
+          <h3>用户简介</h3>
         </div>
 
         <div class="title_right">

@@ -12,9 +12,10 @@ from django.contrib.auth.models import Permission
 from django.contrib.auth import models
 from django.http import JsonResponse
 from .utils import serialize_bootstraptable
-from .models import User, Course
-from django.views.decorators.csrf import csrf_exempt
+from .models import User, Course, Department
+from django.views.decorators.csrf import csrf_exempt, ensure_csrf_cookie
 from django.core.paginator import PageNotAnInteger, Paginator, InvalidPage, EmptyPage
+from django.core.serializers import serialize
 import json
 
 
@@ -22,6 +23,10 @@ def index(request):
     context = {}
     template = loader.get_template('app/login.html')
     return HttpResponse(template.render(context, request))
+
+
+def go_index(request):
+    return render(request, 'app/index.html')
 
 
 def gentella_html(request):
@@ -76,14 +81,12 @@ def register(request):
 
 
 def show_group(request):
-    group = auth.models.Group.objects.all()
-    return render(request, 'app/show_group.html', context={'group': group})
+    return render(request, 'app/show_group.html')
 
 
 def get_group(request):
     group = auth.models.Group.objects.all()
     group_send = serialize_bootstraptable(group, group.count())
-    # return render(request, 'app/show_group.html', context={'group': group})
     return JsonResponse(group_send)
 
 
@@ -124,6 +127,70 @@ def get_stu(request):
     return JsonResponse(stu_send)
 
 
+@csrf_exempt
+def add_stu(request):
+    status = {'status': False}
+    print(request.body)
+    if request.method == "POST":
+        num = request.POST.get('num')
+        first_name = request.POST.get('first_name')
+        college = request.POST.get('college')
+        faculty = request.POST.get('faculty')
+        new_user = User.objects.create(
+            num=num,
+            first_name=first_name,
+            college=college,
+            faculty=faculty,
+            username=num,
+            password='pbkdf2_sha256$30000$HPvJqS3PjSo1$ynYiqwekwkZTYlvXPBuA7NOtEEadBx32ZInz/wUD8q4='
+        )
+        u = User.objects.get(username=num)
+        u.set_password('123456')
+        u.save()
+        if new_user:
+            if new_user.groups.add(2):
+                status = {'status': True}
+    return JsonResponse(status)
+
+
+@csrf_exempt
+def del_stu(request):
+    status = {'status': False}
+    if request.method == "POST":
+        received_json_data = json.loads(request.body)
+        print(received_json_data)
+        for i in received_json_data:
+            stu_num = (i['num'])
+            deletesql = User.objects.filter(num=stu_num)  # 执行删除操作
+            if deletesql.delete():
+                status = {'status': True}
+            else:
+                status = {'status': False}
+    return JsonResponse(status)
+
+
+@csrf_exempt
+def update_stu(request):
+    status = {'status': False}
+    print(request.body)
+    if request.method == "POST":
+        id = request.POST.get('id')
+        num = request.POST.get('num')
+        first_name = request.POST.get('first_name')
+        college = request.POST.get('college')
+        faculty = request.POST.get('faculty')
+        new_stu_info = User.objects.select_for_update().filter(id=id).update(
+            num=num,
+            first_name=first_name,
+            college=college,
+            faculty=faculty,
+        )
+        if new_stu_info:
+            status = {'status': True}
+    return JsonResponse(status)
+
+
+@csrf_exempt
 def show_course(request):
     return render(request, 'app/show_course.html')
 
@@ -197,7 +264,9 @@ def del_course(request):
         print(received_json_data)
         for i in received_json_data:
             courseid = (i['id'])
-            deletesql = models.Group.objects.filter(id=courseid)  # 执行删除操作
+            print(courseid)
+            deletesql = Course.objects.filter(id=courseid)  # 执行删除操作
+            print(deletesql)
             if deletesql.delete():
                 status = {'status': True}
             else:
@@ -205,65 +274,71 @@ def del_course(request):
     return JsonResponse(status)
 
 
-# def get_dept_tree(parents):
-#     display_tree = []
-#     for p in parents:
-#         node = TreeNode()
-#         node.id = p.id
-#         node.text = p.name
-#         children = p.children.all()
-#         if len(children) > 0:
-#             node.nodes = get_dept_tree(children)
-#         display_tree.append(node.to_dict())
-#     return display_tree
-#
-#
-# def show(request):
-#     return render(request, "dept/show.html")
-#
-#
-# def tree(request):
-#     root = Department.objects.get(parent=None)
-#     tree = get_dept_tree([root])
-#     return JsonResponse(tree, safe=False)
+def show_dep(request):
+    return render(request, 'app/show_dep.html')
 
-# @csrf_exempt
-# def get_course(request):
-#     data = request.POST  # 获取 bootstrap-table post请求的数据，直接POST获取！
-#     queryResult = Course.objects.all()  # 去数据库查询
-#     if queryResult == 0:
-#         return HttpResponse('0')
-#
-#     elif queryResult == -1:
-#         return HttpResponse('-1')
-#
-#     else:
-#         '''服务端分页时，前端需要传回：limit（每页需要显示的数据量），offset（分页时 数据的偏移量，即第几页）'''
-#         '''mysql 利用 limit语法 进行分页查询'''
-#         '''服务端分页时，需要返回：total（数据总量），rows（每行数据）  如： {"total": total, "rows": []}'''
-#         returnData = {"rows": []}  #########非常重要############
-#         with open("slg/others/country", "r") as f:
-#             datas = json.loads(f.read())  # 直接读出来，是dic对象，用key，value获取。。。上面的是转换为 对象了，可以用 “.” 获取
-#         '''遍历 查询结果集'''
-#         for results in queryResult:
-#             '''遍历 country.json 输出 订单状态'''
-#             for data in datas['order']:
-#                 if data['stateNum'] == str(results['purchasestate']):
-#                     orderStateResult = data['stateResult']
-#
-#             '''遍历 country.json 输出 国家名称'''
-#             for data in datas['country']:
-#                 if data['shorthand'] == results['countrycode']:
-#                     countryName = data['name']
-#
-#             returnData['rows'].append({
-#                 "id": results['gameorderid'],
-#                 "name": results['orderid'],
-#                 "category": results['nickname'],
-#                 "credit": "Wrath",
-#                 "hours": results['purchasetimes'],
-#                 "teacher": str(results['priceamount']),
-#                 "desc": orderStateResult,
-#             })
-#         # 最后用dumps包装下，json.dumps({"rows": [{"gameorderid": 1}, {"gameorderid": 22}]})
-#         return HttpResponse(json.dumps(returnData))
+
+def get_dep(request):
+    dep = Department.objects.all()
+    json_data = serialize('json', dep)
+    data = json.loads(json_data)
+    dep_send = []
+    for i in data:
+        f_item = i["fields"]
+        f_parentid = f_item["parentID"]
+        if f_parentid:
+            continue
+        else:
+            f_id = f_item["iid"]
+            f_name = f_item["name"]
+            dep_data = {"id": f_id, "text": f_name, "children": []}
+            for p in data:
+                c_item = p["fields"]
+                c_parentid = c_item["parentID"]
+                if c_parentid == f_id:
+                    c_id = c_item["iid"]
+                    c_name = c_item["name"]
+                    c_data = {"id": c_id, "text": c_name, "children": []}
+                    for j in data:
+                        c2_item = j["fields"]
+                        c2_parentid = c2_item["parentID"]
+                        if c2_parentid == c_id:
+                            c2_id = c2_item["iid"]
+                            c2_name = c2_item["name"]
+                            c2_data = {"id": c2_id, "text": c2_name, "children": []}
+                            for k in data:
+                                c3_item = k["fields"]
+                                c3_parentid = c3_item["parentID"]
+                                if c3_parentid == c2_id:
+                                    c3_id = c3_item["iid"]
+                                    c3_name = c3_item["name"]
+                                    c3_data = {"id": c3_id, "text": c3_name}
+                                    c2_data["children"].append(c3_data)
+                            c_data["children"].append(c2_data)
+                    dep_data["children"].append(c_data)
+            dep_send.append(dep_data)
+
+    return HttpResponse(json.dumps(dep_send))
+
+
+def show_cs(request):
+    return render(request, 'app/show_cs.html')
+
+
+@csrf_exempt
+def api_login(request):
+    status = {'status': False}
+    if request.method == "POST":
+        received_json_data = json.loads(request.body)
+        print(received_json_data)
+        username = received_json_data['username']
+        password = received_json_data['password']
+        user = auth.authenticate(username=username, password=password)
+        if user is not None and user.is_active:
+            userinfo = User.objects.filter(username=username)
+            print(userinfo)
+            status = serialize_bootstraptable(userinfo, userinfo.count())
+        else:
+            status = {'status': False}
+    return JsonResponse(status)
+

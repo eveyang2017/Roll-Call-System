@@ -14,7 +14,7 @@ var tableInit = {
     Init_Stu: function () {
         //绑定table的viewmodel
         this.myViewModel = new ko.bootstrapTableViewModel({
-            url: "/app/get_stu/",         //请求后台的URL（*）
+            url: "/api/get_stu/",         //请求后台的URL（*）
             method: 'GET',                      //请求方式（*）
             toolbar: '#get_stu',                //工具按钮用哪个容器
             queryParams: function (param) {
@@ -38,11 +38,11 @@ var operate = {
         this.operateUpdate();
         this.operateDelete();
         this.DepartmentModel = {
-            id: ko.observable(),
-            name: ko.observable(),
-//            Level: ko.observable(),
-//            Des: ko.observable(),
-//            CreateTime: ko.observable()
+            num: ko.observable(),
+            first_name: ko.observable(),
+            college: ko.observable(),
+            faculty: ko.observable(),
+
         };
     },
     //新增
@@ -50,11 +50,10 @@ var operate = {
         $('#btn_add').on("click", function () {
             $("#myModal").modal().on("shown.bs.modal", function () {
                 var oEmptyModel = {
-                    id: ko.observable(),
-                    Name: ko.observable(),
-                    Level: ko.observable(),
-                    Des: ko.observable(),
-                    CreateTime: ko.observable()
+                    num: ko.observable(),
+                    first_name: ko.observable(),
+                    college: ko.observable(),
+                    faculty: ko.observable(),
                 };
                 ko.utils.extend(operate.DepartmentModel, oEmptyModel);
                 ko.applyBindings(operate.DepartmentModel, document.getElementById("myModal"));
@@ -85,7 +84,7 @@ var operate = {
         $('#btn_delete').on("click", function () {
             var arrselectedData = tableInit.myViewModel.getSelections();
             $.ajax({
-                url: "/app/del_group/",
+                url: "/api/del_stu/",
                 type: "post",
                 contentType: 'application/json',
                 data: JSON.stringify(arrselectedData),
@@ -102,9 +101,10 @@ var operate = {
             //取到当前的viewmodel
             var oViewModel = operate.DepartmentModel;
             //将Viewmodel转换为数据model
-            var oDataModel = ko.toJS(oViewModel);var funcName = oDataModel.id?"Update":"Add";
+            var oDataModel = ko.toJS(oViewModel);
+            var funcName = oDataModel.id?"update_stu/":"add_stu/";
             $.ajax({
-                url: "/Department/"+funcName,
+                url: "/api/"+funcName,
                 type: "post",
                 data: oDataModel,
                 success: function (data, status) {

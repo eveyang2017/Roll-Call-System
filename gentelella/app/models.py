@@ -58,12 +58,13 @@ class Course(models.Model):
 
 
 class Department(models.Model):
-    name = models.CharField(verbose_name="组织名称", max_length=30)
-    pri = models.IntegerField(verbose_name="序号")
-    desc = models.CharField(verbose_name="备注", max_length=100)
-    parent = models.ForeignKey('self', blank=True, null=True, related_name="children", verbose_name="上级结构")
-    full_path = models.CharField(verbose_name="全路径", max_length=20, blank=True, null=True)
-    deep_level = models.IntegerField(verbose_name="深度", default=0)
+    iid = models.IntegerField(blank=True, null=True, verbose_name=u'组织编号')
+    parentID = models.IntegerField(blank=True, null=True, verbose_name=u'上层组织')
+    name = models.CharField(max_length=100, unique=True, verbose_name=u'组织名称')
+    info = models.TextField(max_length=200, null=True, blank=True, verbose_name=u'组织说明')
+    domain = models.CharField(max_length=50, null=True, blank=True, verbose_name=u'域名')
+    monitor_url = models.CharField(max_length=50, null=True, blank=True, verbose_name=u'监控页面')
+    comment = models.CharField(max_length=100, blank=True, null=True, verbose_name=u'备注')
 
     def __str__(self):
 
