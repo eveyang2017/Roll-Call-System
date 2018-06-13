@@ -4,20 +4,12 @@
       <ion-icon name="menu"></ion-icon>
     </button>
 
-    <ion-segment [(ngModel)]="segment" (ionChange)="updateSchedule()">
-      <ion-segment-button value="all">
-        All
-      </ion-segment-button>
-      <ion-segment-button value="favorites">
-        Favorites
-      </ion-segment-button>
-    </ion-segment>
-
-    <ion-buttons end>
+    <ion-title>课程信息</ion-title>
+    <!-- <ion-buttons end>
       <button ion-button icon-only (click)="presentFilter()">
         <ion-icon ios="ios-options-outline" md="md-options"></ion-icon>
       </button>
-    </ion-buttons>
+    </ion-buttons> -->
   </ion-navbar>
 
   <ion-toolbar no-border-top>
@@ -71,7 +63,7 @@
   </ion-list>
 
   <ion-list-header [hidden]="shownSessions > 0">
-      No Sessions Found
+      没有找到
   </ion-list-header>
 
   <ion-fab bottom right #fab>
