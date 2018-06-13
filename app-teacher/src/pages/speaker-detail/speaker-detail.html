@@ -6,18 +6,16 @@
 
 <ion-content padding class="speaker-detail">
   <div text-center *ngIf="speaker">
-    <img [src]="speaker.profilePic" [alt]="speaker.name"><br>
+    
 
-    <button ion-button icon-only clear small color="twitter">
-      <ion-icon name="logo-twitter"></ion-icon>
-    </button>
-    <button ion-button icon-only clear small color="github">
-      <ion-icon name="logo-github"></ion-icon>
-    </button>
-    <button ion-button icon-only clear small color="instagram">
-      <ion-icon name="logo-instagram"></ion-icon>
-    </button>
+    
+      <p>{{speaker?.begin_time}}</p> 到 <p>{{speaker?.end_time}}</p>
+      <p>{{speaker?.location}}</p> 
+    
+    
   </div>
+  <h3 >缺席学生</h3>
+  
+  
 
-  <p>{{speaker?.about}}</p>
 </ion-content>
