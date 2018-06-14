@@ -1,11 +1,11 @@
 {
-  "name": "ionic-conference-app",
+  "name": "签到系统--老师",
   "version": "0.0.0",
-  "description": "Ionic Conference App",
+  "description": "",
   "license": "Apache-2.0",
   "repository": {
     "type": "git",
-    "url": "https://github.com/ionic-team/ionic-conference-app.git"
+    "url": ""
   },
   "scripts": {
     "build": "ionic build",
@@ -13,30 +13,29 @@
     "start": "npm run serve"
   },
   "dependencies": {
-    "@angular/common": "5.0.0",
-    "@angular/compiler": "5.0.0",
-    "@angular/compiler-cli": "5.0.0",
-    "@angular/core": "5.0.0",
-    "@angular/forms": "5.0.0",
-    "@angular/http": "5.0.0",
-    "@angular/platform-browser": "5.0.0",
-    "@angular/platform-browser-dynamic": "5.0.0",
+    "@angular/common": "^5.2.11",
+    "@angular/compiler": "^5.2.11",
+    "@angular/compiler-cli": "^5.2.11",
+    "@angular/core": "^5.2.11",
+    "@angular/forms": "^5.2.11",
+    "@angular/http": "^5.2.11",
+    "@angular/platform-browser": "^5.2.11",
+    "@angular/platform-browser-dynamic": "^5.2.11",
     "@ionic-native/core": "^4.3.1",
     "@ionic-native/in-app-browser": "^4.3.1",
     "@ionic-native/network": "^4.7.0",
     "@ionic-native/splash-screen": "^4.3.1",
     "@ionic-native/status-bar": "^4.3.1",
     "@ionic/storage": "2.1.3",
-    "cordova-android": "~7.0.0",
-    "cordova-plugin-crosswalk-webview": "^2.4.0",
-    "cordova-plugin-device": "^1.1.7",
-    "cordova-plugin-inappbrowser": "^1.7.2",
-    "cordova-plugin-ionic-keyboard": "^2.0.5",
-    "cordova-plugin-ionic-webview": "^1.2.1",
-    "cordova-plugin-network-information": "^2.0.1",
-    "cordova-plugin-splashscreen": "^4.1.0",
-    "cordova-plugin-statusbar": "^2.4.2",
-    "cordova-plugin-whitelist": "^1.3.3",
+    "cordova-android": "^6.2.3",
+    "cordova-ios": "^4.5.2",
+    "cordova-plugin-device": "^1.1.6",
+    "cordova-plugin-inappbrowser": "^1.7.1",
+    "cordova-plugin-ionic-keyboard": "^2.0.2",
+    "cordova-plugin-ionic-webview": "^1.1.15",
+    "cordova-plugin-splashscreen": "^4.0.3",
+    "cordova-plugin-statusbar": "^2.2.3",
+    "cordova-plugin-whitelist": "^1.3.2",
     "ionic-angular": "3.9.2",
     "ionicons": "3.0.0",
     "rxjs": "5.5.2",
@@ -52,24 +51,17 @@
   },
   "cordova": {
     "platforms": [
-      "android"
+      "android",
+      "ios"
     ],
     "plugins": {
-      "cordova-plugin-crosswalk-webview": {
-        "XWALK_VERSION": "22+",
-        "XWALK_LITEVERSION": "xwalk_core_library_canary:17+",
-        "XWALK_COMMANDLINE": "--disable-pull-to-refresh-effect",
-        "XWALK_MODE": "embedded",
-        "XWALK_MULTIPLEAPK": "true"
-      },
       "cordova-plugin-device": {},
       "cordova-plugin-inappbrowser": {},
       "cordova-plugin-splashscreen": {},
       "cordova-plugin-whitelist": {},
       "cordova-plugin-ionic-webview": {},
       "cordova-plugin-statusbar": {},
-      "cordova-plugin-ionic-keyboard": {},
-      "cordova-plugin-network-information": {}
+      "cordova-plugin-ionic-keyboard": {}
     }
   }
 }
