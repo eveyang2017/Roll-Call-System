@@ -42,6 +42,7 @@ def gentella_html(request):
 
 @csrf_exempt
 def do_login(request):
+    flag = 1
     if request.method == 'GET':
         form = LoginForm()
         return render_to_response('app/login.html', RequestContext(request, {'form': form, }))
@@ -52,10 +53,16 @@ def do_login(request):
             password = request.POST.get('password', '')
             user = auth.authenticate(username=username, password=password)
             if user is not None and user.is_active:
-                auth.login(request, user)
-                return render_to_response('app/index.html', RequestContext(request))
-            else:
-                return render_to_response('app/login.html', RequestContext(request, {'form': form, 'password_is_wrong': True}))
+                stu = User.objects.filter(groups__id='2')
+                for i in stu:
+                    if user == i:
+                        print(i.username)
+                        flag = 0
+                if flag == 1: 
+                    auth.login(request, user)
+                    return render_to_response('app/index.html', RequestContext(request))
+                else:
+                    return render_to_response('app/login.html', RequestContext(request, {'form': form, 'password_is_wrong': True}))
         else:
             return render_to_response('app/login.html', RequestContext(request, {'form': form, }))
 
@@ -323,6 +330,10 @@ def get_dep(request):
 
 def show_cs(request):
     return render(request, 'app/show_cs.html')
+
+
+def show_place(request):
+    return render(request, 'app/show_place.html')
 
 
 @csrf_exempt

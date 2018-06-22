@@ -1,0 +1,152 @@
+{% extends "app/base_site.html" %}
+{% block javascripts %}
+<!-- jQuery -->
+<script src="/static/vendors/jquery/dist/jquery.min.js"></script>
+<!-- Bootstrap -->
+<script src="/static/vendors/bootstrap/dist/js/bootstrap.min.js"></script>
+<!-- FastClick -->
+<script src="/static/vendors/fastclick/lib/fastclick.js"></script>
+<!-- NProgress -->
+<script src="/static/vendors/nprogress/nprogress.js"></script>
+<!-- bootstrap-progressbar -->
+<script src="/static/vendors/bootstrap-progressbar/bootstrap-progressbar.min.js"></script>
+<!-- iCheck -->
+<script src="/static/vendors/iCheck/icheck.min.js"></script>
+<!-- bootstrap-daterangepicker -->
+<script src="/static/vendors/moment/min/moment.min.js"></script>
+<script src="/static/vendors/bootstrap-daterangepicker/daterangepicker.js"></script>
+<!-- bootstrap-wysiwyg -->
+<script src="/static/vendors/bootstrap-wysiwyg/js/bootstrap-wysiwyg.min.js"></script>
+<script src="/static/vendors/jquery.hotkeys/jquery.hotkeys.js"></script>
+<script src="/static/vendors/google-code-prettify/src/prettify.js"></script>
+<!-- jQuery Tags Input -->
+<script src="/static/vendors/jquery.tagsinput/src/jquery.tagsinput.js"></script>
+<!-- Switchery -->
+<script src="/static/vendors/switchery/dist/switchery.min.js"></script>
+<!-- Select2 -->
+<script src="/static/vendors/select2/dist/js/select2.full.min.js"></script>
+<!-- Parsley -->
+<script src="/static/vendors/parsleyjs/dist/parsley.min.js"></script>
+<!-- Autosize -->
+<script src="/static/vendors/autosize/dist/autosize.min.js"></script>
+<!-- jQuery autocomplete -->
+<script src="/static/vendors/devbridge-autocomplete/dist/jquery.autocomplete.min.js"></script>
+<!-- starrr -->
+<script src="/static/vendors/starrr/dist/starrr.js"></script>
+<script src="/static/vendors/bootstrap-table/src/bootstrap-table.js"></script>
+<!--<script src="/static/vendors/bootstrap-table/dist/bootstrap-table.min.js"></script>-->
+<script src="/static/vendors/bootstrap-table/dist/locale/bootstrap-table-zh-CN.js"></script>
+<script src="https://cdn.bootcss.com/knockout/3.4.0/knockout-min.js"></script>
+<script src="/static/vendors/knockout.mapping-latest/knockout.mapping-latest.js"></script>
+<script src="/static/build/js/knockout.bootstraptable.js"></script>
+<script src="/static/build/js/show_place.js"></script>
+{% endblock %}
+{% block content %}
+  <div class="right_col" role="main">
+      <div class="container">
+        <ul class="breadcrumb">
+            <li><a href="{% url 'go_index' %}">首页</a></li>
+            <li><a href="#">组织管理</a></li>
+            <li>授课地点</li>
+            <!--<li><a href="#">阿里</a></li>-->
+            <!--<li><a href="#">林芝</a></li>-->
+        </ul>
+      </div>
+      <div class="">
+      <div class="page-title">
+        <div class="title_left">
+          <h3>授课地点</h3>
+        </div>
+
+      </div>
+      <div class="clearfix"></div>
+      <div class="row">
+        <div class="col-md-12 col-sm-12 col-xs-12">
+            <div class="panel panel-default">
+            <div class="panel-heading">查询条件</div>
+            <div class="panel-body">
+                <form id="formSearch" class="form-horizontal">
+                    <div class="form-group" style="margin-top:15px">
+                        <label class="control-label col-sm-1" for="txt_search_departmentname">授课地点</label>
+                        <div class="col-sm-3">
+                            <input type="text" class="form-control" id="txt_search_departmentname">
+                        </div>
+                        <label class="control-label col-sm-1" for="txt_search_statu">所属组织</label>
+                        <div class="col-sm-3">
+                            <input type="text" class="form-control" id="txt_search_statu">
+                        </div>
+                        <div class="col-sm-4" style="text-align:left;">
+                            <button type="button" style="margin-left:50px" id="btn_query" class="btn btn-primary">查询</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+          <div class="x_panel">
+
+                  <div id="get_stu" class="btn-group">
+                    <button id="btn_add" type="button" class="btn btn-default">
+                    <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>新增
+                    </button>
+                    <button id="btn_edit" type="button" class="btn btn-default">
+                    <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>修改
+                    </button>
+                    <button id="btn_delete" type="button" class="btn btn-default">
+                    <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>删除
+                    </button>
+                </div>
+            <div class="x_content">
+            <table id="tb_stu" data-bind="myBootstrapTable:$root">
+                <thead>
+                    <tr>
+                        <th data-checkbox="true"></th>
+                        <!--<th data-field="username">学号</th>-->
+                        <th data-field="num" data-sortable="true">学号</th>
+                        <th data-field="first_name" data-sortable="true">姓名</th>
+                        <th data-field="college" data-sortable="true">学院</th>
+                        <th data-field="faculty" data-sortable="true">系别</th>
+                    </tr>
+                </thead>
+            </table>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+    </div>
+  </div>
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">操作</h4>
+            </div>
+            <div class="modal-body">
+
+                <div class="form-group">
+                    <label for="txt_num">学号</label>
+                    <input type="text" name="txt_num" data-bind="value:num" class="form-control" id="txt_num" placeholder="学号">
+                </div>
+                <div class="form-group">
+                    <label for="txt_first_name">姓名</label>
+                    <input type="text" name="txt_first_name" data-bind="value:first_name" class="form-control" id="txt_first_name" placeholder="姓名">
+                </div>
+                <div class="form-group">
+                    <label for="txt_college">学院</label>
+                    <input type="text" name="txt_college" data-bind="value:college" class="form-control" id="txt_college" placeholder="学院">
+                </div>
+                <div class="form-group">
+                    <label for="txt_faculty">系别</label>
+                    <input type="text" name="txt_faculty" data-bind="value:faculty" class="form-control" id="txt_faculty" placeholder="系别">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span>关闭</button>
+                <button type="button" id="btn_submit" class="btn btn-primary" data-dismiss="modal"><span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span>保存</button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}
