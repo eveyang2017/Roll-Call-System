@@ -31,5 +31,11 @@ urlpatterns = [
     url(r'app/show_dep/', views.show_dep, name='show_dep'),
     url(r'api/get_dep/', views.get_dep),
     url(r'app/show_cs/', views.show_cs, name='show_cs'),
+    url(r'api/get_cs/', views.get_cs),
+    url(r'app/show_place/', views.show_place, name='show_place'),
+    url(r'api/get_place/', views.get_place),
+    url(r'api/add_place/', views.add_place),
+    url(r'api/update_place/', views.update_place),
+    url(r'api/del_place/', views.del_place),
     url(r'api/login/', views.api_login),
 ]

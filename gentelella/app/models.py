@@ -76,28 +76,33 @@ class Department(models.Model):
         verbose_name_plural = "组织结构"
 
 
-# class TreeNode():
-#     def __init__(self):
-#
-#     self.id = 0
-#     self.text = "Node 1"
-#     self.href = "#node-1"
-#     self.selectable = True
-#     self.state = {
-#         ‘checked‘: True,
-#         ‘disabled‘: True,
-#         ‘expanded‘: True,
-#         ‘selected‘: True,
-#         },
-#         self.tags = [‘available‘],
-#         self.nodes = []
-#     def to_dict(self):
-#         icon = (len(self.nodes) > 0) and ‘glyphicon glyphicon-list-alt‘ or ‘glyphicon glyphicon-user‘
-#     return {
-#         ‘id‘: self.id,
-#         ‘text‘: self.text,
-#         ‘icon‘: icon,
-#         ‘href‘: self.href,
-#         ‘tags‘: [‘1‘],
-#         ‘nodes‘: self.nodes,
-#     }
+class Place(models.Model):
+    name = models.CharField(max_length=100, unique=True, verbose_name=u'地点')
+    dep = models.CharField(max_length=100, blank=True, null=True, verbose_name=u'所属组织')
+    comment = models.TextField(max_length=200, null=True, blank=True, verbose_name=u'说明')
+
+    def __str__(self):
+
+        return self.name
+
+    class Meta:
+
+        verbose_name = "授课地点"
+        verbose_name_plural = "授课地点"
+
+
+class CS(models.Model):
+    name = models.CharField(max_length=100, unique=True, verbose_name=u'课程名称')
+    place = models.CharField(max_length=100, unique=True, verbose_name=u'地点')
+    time = models.DateField(null=True, blank=True, verbose_name=u'时间')
+    teacher = models.CharField(max_length=100, blank=True, null=True, verbose_name=u'教师')
+    comment = models.TextField(max_length=200, null=True, blank=True, verbose_name=u'说明')
+
+    def __str__(self):
+
+        return self.name
+
+    class Meta:
+
+        verbose_name = "课程安排"
+        verbose_name_plural = "课程安排"

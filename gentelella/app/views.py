@@ -12,7 +12,7 @@ from django.contrib.auth.models import Permission
 from django.contrib.auth import models
 from django.http import JsonResponse
 from .utils import serialize_bootstraptable
-from .models import User, Course, Department
+from .models import User, Course, Department, CS, Place
 from django.views.decorators.csrf import csrf_exempt, ensure_csrf_cookie
 from django.core.paginator import PageNotAnInteger, Paginator, InvalidPage, EmptyPage
 from django.core.serializers import serialize
@@ -332,8 +332,96 @@ def show_cs(request):
     return render(request, 'app/show_cs.html')
 
 
+@csrf_exempt
+def get_cs(request):
+    if request.method == "GET":
+        limit = request.GET.get('limit')
+        offset = request.GET.get('offset')
+        if not limit:
+            limit = 10
+        if not offset:
+            offset = 0
+        cs = CS.objects.all()
+        pageinator = Paginator(cs, limit)
+        page = int(int(offset) / int(limit) + 1)
+        cs_page_info = pageinator.page(page).object_list
+        cs_send = serialize_bootstraptable(cs_page_info, cs.count())
+    return JsonResponse(cs_send)
+
+
 def show_place(request):
     return render(request, 'app/show_place.html')
+
+@csrf_exempt
+def get_place(request):
+    if request.method == "GET":
+        limit = request.GET.get('limit')
+        offset = request.GET.get('offset')
+        if not limit:
+            limit = 10
+        if not offset:
+            offset = 0
+        place = Place.objects.all()
+        pageinator = Paginator(place, limit)
+        page = int(int(offset) / int(limit) + 1)
+        place_page_info = pageinator.page(page).object_list
+        place_send = serialize_bootstraptable(place_page_info, place.count())
+    return JsonResponse(place_send)
+
+
+@csrf_exempt
+def add_place(request):
+    status = {'status': False}
+    print(request.body)
+    if request.method == "POST":
+        name = request.POST.get('name')
+        dep = request.POST.get('dep')        
+        comment =request.POST.get('comment')
+        new_place = Place.objects.create(
+            name=name,
+            dep=dep,
+            comment=comment,
+        )
+        if new_place:
+            status = {'status': True}
+    return JsonResponse(status)
+
+
+@csrf_exempt
+def update_place(request):
+    status = {'status': False}
+    print(request.body)
+    if request.method == "POST":
+        id = request.POST.get('id')
+        name = request.POST.get('name')
+        dep = request.POST.get('dep')        
+        comment =request.POST.get('comment')
+        new_place_info = Place.objects.select_for_update().filter(id=id).update(
+            name=name,
+            dep=dep,
+            comment=comment,
+        )
+        if new_place_info:
+            status = {'status': True}
+    return JsonResponse(status)
+
+
+@csrf_exempt
+def del_place(request):
+    status = {'status': False}
+    if request.method == "POST":
+        received_json_data = json.loads(request.body)
+        print(received_json_data)
+        for i in received_json_data:
+            courseid = (i['id'])
+            print(courseid)
+            deletesql = Place.objects.filter(id=courseid)  # 执行删除操作
+            print(deletesql)
+            if deletesql.delete():
+                status = {'status': True}
+            else:
+                status = {'status': False}
+    return JsonResponse(status)
 
 
 @csrf_exempt

@@ -2,7 +2,7 @@ from __future__ import absolute_import
 import xadmin
 from .models import UserSettings, Log
 from xadmin.layout import *
-from app.models import User, Course, Department
+from app.models import User, Course, Department, CS, Place
 from django.utils.translation import ugettext_lazy as _, ugettext
 
 
@@ -15,6 +15,8 @@ xadmin.site.register(UserSettings, UserSettingsAdmin)
 xadmin.site.register(User)
 xadmin.site.register(Course)
 xadmin.site.register(Department)
+xadmin.site.register(CS)
+xadmin.site.register(Place)
 
 
 class LogAdmin(object):
